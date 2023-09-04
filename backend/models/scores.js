@@ -4,9 +4,10 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   const score = sequelize.define("scores", {
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
+      autoIncrement: true,
     },
     difficulty: {
       type: DataTypes.STRING,

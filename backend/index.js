@@ -3,7 +3,8 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
 const db = require("./models");
-const userRoute = require("./routes/userRoutes");
+const userRouter = require("./routes/userRoutes");
+const scoreRouter = require("./routes/scoresRoutes");
 
 const { users } = require("./models");
 // userRoute.
@@ -23,20 +24,5 @@ app.get("/", (req, res) => {
   res.status(200).send({ msg: "Welcome to my API" });
 });
 
-app.use("/users", userRoute.users);
-
-app.post("/create", async (req, res) => {
-  const { username } = req.body;
-
-  try {
-    const data = await users.create({
-      username: username,
-    });
-
-    res.status(201).json({
-      msg: "New user added",
-    });
-  } catch (err) {
-    res.status(400).send({ err: err });
-  }
-});
+app.use("/users", userRouter);
+app.use("/scores", scoreRouter);
