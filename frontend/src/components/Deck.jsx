@@ -24,7 +24,8 @@ export default function Deck({
   const { seconds, minutes, pause, reset } = useStopwatch({ autoStart: true });
 
   async function addToLeaderBoard() {
-    const endpoint = "http://localhost:3001/scores/newScore";
+    const endpoint =
+      "memory-game-full-stack-production.up.railway.app/scores/newScore";
 
     try {
       const data = await axios.post(endpoint, {
