@@ -61,7 +61,7 @@ export default function Home() {
 
   useEffect(() => {
     const endpoint =
-      "memory-game-full-stack-production.up.railway.app/users/add";
+      "https://memory-game-full-stack-production.up.railway.app/users/add";
     const addNewUser = async (name) => {
       try {
         // const dataaxios.post(endpoint, {username: name})

@@ -25,7 +25,7 @@ export default function Deck({
 
   async function addToLeaderBoard() {
     const endpoint =
-      "memory-game-full-stack-production.up.railway.app/scores/newScore";
+      "https://memory-game-full-stack-production.up.railway.app/scores/newScore";
 
     try {
       const data = await axios.post(endpoint, {

@@ -24,7 +24,7 @@ const LeaderBoard = () => {
   const [userInfo, setUserInfo] = useState(null);
 
   async function getScores() {
-    const endpoint = `memory-game-full-stack-production.up.railway.app/scores/all?difficulty=${difficulty}`;
+    const endpoint = `https://memory-game-full-stack-production.up.railway.app/scores/all?difficulty=${difficulty}`;
     try {
       const data = await axios.get(endpoint);
       console.log(data.data.data);
