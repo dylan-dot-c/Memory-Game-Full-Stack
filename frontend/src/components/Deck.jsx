@@ -1,237 +1,281 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
 import Card from "./Card";
+import axios from "axios";
 
-import Confetti from 'react-confetti'
+import Confetti from "react-confetti";
 import { nanoid } from "nanoid";
 
-export default function Deck({difficulty, setGame, highScore, updateHighScore}) { 
+export default function Deck({
+  difficulty,
+  setGame,
+  highScore,
+  updateHighScore,
+  userInfo,
+}) {
+  const [cards, setCards] = useState([]);
+  const [selectedCards, setSelectedCards] = useState([]);
+  const [foundCards, setFoundCards] = useState([]);
+  const [cardsMatched, setCardsMatched] = useState(0);
+  const [won, setWon] = useState(false);
+  const [flips, setFlips] = useState(0);
+  const cardNum = difficulty.cards;
 
-    const [cards, setCards] = useState([])
-    const [selectedCards, setSelectedCards] = useState([])
-    const [foundCards, setFoundCards] = useState([])
-    const [cardsMatched, setCardsMatched] = useState(0)
-    const [won, setWon] = useState(false)
-    const [flips, setFlips] = useState(0)
-    const cardNum = difficulty.cards
+  const { seconds, minutes, pause, reset } = useStopwatch({ autoStart: true });
 
-    const {seconds, minutes, pause, reset} = useStopwatch({autoStart: true})
+  async function addToLeaderBoard() {
+    const endpoint = "http://localhost:3001/scores/newScore";
 
-    useEffect( () => {
-        newGame()
-    }, [])
+    try {
+      const data = await axios.post(endpoint, {
+        id: userInfo.id,
+        flips: flips,
+        seconds: seconds + minutes * 60,
+        difficulty: difficulty.name,
+      });
 
-    function newGame() {
-        setCards(defineCards());
-        setSelectedCards([]);
-        setFoundCards([]);
-        setCardsMatched(0);
-        setWon(false);
-        setFlips(0);
-        reset()
+      console.log("HighScore Added to DB");
+      console.log(data);
+    } catch (err) {
+      alert("Failed to add HS");
     }
+  }
 
-    function defineCards() {
-        const cardImages = ['js', 'node-js', 'python', 'react', 'swift', 'vite', 'vue', 'typescript', 'gitlab', 'github', 'aws', 'angular']
-        // selecting 6 random cards
-        const randomLimit = cardImages.sort( () => Math.random() -0.5).slice(0,cardNum)
-        const combinedCards = [...randomLimit, ...randomLimit]
-        const randomCards = combinedCards.sort( () => Math.random() - 0.5)
+  useEffect(() => {
+    newGame();
+  }, []);
 
-        const result = randomCards.map( (card) => {
-            return {
-                name: card,
-                isFlipped: false,
-                id: nanoid(),
-            }
-        })
+  function newGame() {
+    setCards(defineCards());
+    setSelectedCards([]);
+    setFoundCards([]);
+    setCardsMatched(0);
+    setWon(false);
+    setFlips(0);
+    reset();
+  }
 
-        return result
-    }
+  function defineCards() {
+    const cardImages = [
+      "js",
+      "node-js",
+      "python",
+      "react",
+      "swift",
+      "vite",
+      "vue",
+      "typescript",
+      "gitlab",
+      "github",
+      "aws",
+      "angular",
+    ];
+    // selecting 6 random cards
+    const randomLimit = cardImages
+      .sort(() => Math.random() - 0.5)
+      .slice(0, cardNum);
+    const combinedCards = [...randomLimit, ...randomLimit];
+    const randomCards = combinedCards.sort(() => Math.random() - 0.5);
 
-    function flipCard(id, name) {
-        console.log(name, id)
-        console.log("Founded" , foundCards)
+    const result = randomCards.map((card) => {
+      return {
+        name: card,
+        isFlipped: false,
+        id: nanoid(),
+      };
+    });
 
-        setCards( (oldCards) => {
-            const newCards = oldCards.map((card) => {
-                return card.id === id ? {...card, isFlipped: !card.isFlipped} : card
-            })
-            return newCards
-        })
+    return result;
+  }
 
-        setSelectedCards( prevCards => {
-            const flipped = {id, name}
-            const newCards = [...prevCards, flipped]
-            return (
-                newCards
-            )
-        })
-    }
+  function flipCard(id, name) {
+    console.log(name, id);
+    console.log("Founded", foundCards);
 
-    function compareHighScore() {
-        // function that compares the current highscore and the stored one
-        // and updates the highscore for the corres difficulty if it is greater
+    setCards((oldCards) => {
+      const newCards = oldCards.map((card) => {
+        return card.id === id ? { ...card, isFlipped: !card.isFlipped } : card;
+      });
+      return newCards;
+    });
 
-        
-        const currentScore = {
-            name: difficulty.name,
-            flips: flips,
-            time: {
-                minutes: minutes,
-                seconds: seconds,
-            }
-        }
+    setSelectedCards((prevCards) => {
+      const flipped = { id, name };
+      const newCards = [...prevCards, flipped];
+      return newCards;
+    });
+  }
 
-        const storedHS = highScore.map( (highScore) => {
-            
-            if(highScore.name == difficulty.name) {
-                return highScore
-            }
-        })
+  function compareHighScore() {
+    // function that compares the current highscore and the stored one
+    // and updates the highscore for the corres difficulty if it is greater
 
-        const oldHS = storedHS[0]
+    const currentScore = {
+      name: difficulty.name,
+      flips: flips,
+      time: {
+        minutes: minutes,
+        seconds: seconds,
+      },
+    };
 
-        const shouldWeUpdate = compare(currentScore, oldHS)
-
-        if(shouldWeUpdate) {
-
-            alert("NEW HIGHSCORE")
-            updateHighScore( (prevHS) => {
-
-                const newHS = prevHS.map( (highScore) => {
-    
-                    if(highScore.name == difficulty.name) {
-                        return (currentScore)
-                    }else {
-                        return highScore
-                    }
-    
-                })
-    
-                return newHS
-            })
-        }
-
-    }
-
-    function compare(current, old) {
-        if (!old) {
-          return true;
-        }
-      
-        const currentTime = getTotalTime(current.time);
-        const oldTime = getTotalTime(old.time);
-      
-        if (old.flips === 0 || (current.flips <= old.flips && currentTime <= oldTime)) {
-          return true;
-        } else {
-          return false;
-        }
+    const storedHS = highScore.map((highScore) => {
+      if (highScore.name == difficulty.name) {
+        return highScore;
       }
-      
+    });
 
-    // function compare(current, old) {
-    //     const currentTime = getTotalTime(current.time)
-    //     const oldTime = getTotalTime(old.time)
+    const oldHS = storedHS[0];
 
-    //     if(old.flips == 0) {
-    //         return true
-    //     }
-    //     if(current.flips <= old.flips && (currentTime <= oldTime)) {
-    //         return true
-    //     }else {
-    //         return false
-    //     }
-    // }
+    const shouldWeUpdate = compare(currentScore, oldHS);
 
-    function getTotalTime(time) {
-        const {minutes, seconds} = time
-        return (minutes * 60) + seconds
+    if (shouldWeUpdate) {
+      alert("NEW HIGHSCORE");
+      addToLeaderBoard();
+      updateHighScore((prevHS) => {
+        const newHS = prevHS.map((highScore) => {
+          if (highScore.name == difficulty.name) {
+            return currentScore;
+          } else {
+            return highScore;
+          }
+        });
+
+        return newHS;
+      });
+    }
+  }
+
+  function compare(current, old) {
+    if (!old) {
+      return true;
     }
 
-    useEffect( () => {
-        if(selectedCards.length == 2) {
+    const currentTime = getTotalTime(current.time);
+    const oldTime = getTotalTime(old.time);
 
-            const first = selectedCards.at(0)
-            const second = selectedCards.at(1)
+    if (
+      old.flips === 0 ||
+      (current.flips <= old.flips && currentTime <= oldTime)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-            if(first.name == second.name) {
-                setCardsMatched(true)
+  // function compare(current, old) {
+  //     const currentTime = getTotalTime(current.time)
+  //     const oldTime = getTotalTime(old.time)
 
-                setTimeout( () => {
-                    setCardsMatched(false)
-                }, 10)
+  //     if(old.flips == 0) {
+  //         return true
+  //     }
+  //     if(current.flips <= old.flips && (currentTime <= oldTime)) {
+  //         return true
+  //     }else {
+  //         return false
+  //     }
+  // }
 
-                console.log('matched', foundCards)
+  function getTotalTime(time) {
+    const { minutes, seconds } = time;
+    return minutes * 60 + seconds;
+  }
 
-                setFoundCards( (prevCards) => {
-                    const newCards = [...prevCards, selectedCards[0]]
+  useEffect(() => {
+    if (selectedCards.length == 2) {
+      const first = selectedCards.at(0);
+      const second = selectedCards.at(1);
 
-                    return newCards
-                })
-            }else {
-                // unflip the cards and empty array
-                setTimeout(() => {
-                    flipCard(first.id, first.name)
-                    flipCard(second.id, second.name)
-                    setCardsMatched(cardsMatched+1)
-                    
-                }, 300)
-            }
-        }
-    }, [selectedCards])
+      if (first.name == second.name) {
+        setCardsMatched(true);
 
-    useEffect( () => {
-        setSelectedCards([])
-    }, [cardsMatched])
+        setTimeout(() => {
+          setCardsMatched(false);
+        }, 10);
 
-    useEffect( () => {
-        if(foundCards.length == cardNum) {
-            setWon(true)
-            compareHighScore()
-            pause()
-        }
-    }, [foundCards])
+        console.log("matched", foundCards);
 
-    return (
+        setFoundCards((prevCards) => {
+          const newCards = [...prevCards, selectedCards[0]];
 
-        <>
-            <p className="text-center">Difficultly: <span className="capitalize text-red-600">{difficulty.name}</span></p>
-            <div className="flex justify-between ">
-            <p className=" text-xl shadow-black my-2">Flips: <span className="text-red-500 font-mono">{flips}</span> </p>
-            {/* <p>SECONDS: {seconds} Minutes: {minutes}</p> */}
-            <p className="text-black text-xl my-2">TIME: <span className="text-red-500 font-mono">{('00'+minutes).slice(-2)}:{('00'+(seconds)).slice(-2)}</span></p>
-            </div>
-            <div className="flex gap-5 flex-wrap justify-center">
-            {cards.map( (card, index) => {
+          return newCards;
+        });
+      } else {
+        // unflip the cards and empty array
+        setTimeout(() => {
+          flipCard(first.id, first.name);
+          flipCard(second.id, second.name);
+          setCardsMatched(cardsMatched + 1);
+        }, 300);
+      }
+    }
+  }, [selectedCards]);
 
-                return (
-                    <Card 
-                    name = {card.name}
-                    id = {card.id}
-                    isFlipped = {card.isFlipped}
-                    flipCard = {() => {
-                        flipCard(card.id, card.name)
-                        setFlips( (prev) => prev + 1)
-                    }}
-                    key={index}
-                    />
-                )
-                })}
-                </div>
+  useEffect(() => {
+    setSelectedCards([]);
+  }, [cardsMatched]);
 
-                {won && <Confetti/>}
-                {/* {won && <img src="https://media1.giphy.com/media/YrUD55uLZtdab4CriB/source.gif" width="200px" alt="" /> } */}
+  useEffect(() => {
+    if (foundCards.length == cardNum) {
+      setWon(true);
+      compareHighScore();
+      pause();
+    }
+  }, [foundCards]);
 
-            <div className="flex justify-between mt-4">
-            <button className="btn bg-cyan-500" onClick={newGame}>
-                New Game
-            </button>
-            <button className="btn bg-purple-500" onClick={() => {setGame(false)}}>
-                Return Home
-            </button>
-            </div>
-        </>
-    )
+  return (
+    <>
+      <p className="text-center">
+        Difficultly:{" "}
+        <span className="capitalize text-red-600">{difficulty.name}</span>
+      </p>
+      <div className="flex justify-between ">
+        <p className=" text-xl shadow-black my-2">
+          Flips: <span className="text-red-500 font-mono">{flips}</span>{" "}
+        </p>
+        {/* <p>SECONDS: {seconds} Minutes: {minutes}</p> */}
+        <p className="text-black text-xl my-2">
+          TIME:{" "}
+          <span className="text-red-500 font-mono">
+            {("00" + minutes).slice(-2)}:{("00" + seconds).slice(-2)}
+          </span>
+        </p>
+      </div>
+      <div className="grid grid-cols-4 gap-6 md:grid-cols-6 md:gap-6 flex-wrap justify-center">
+        {cards.map((card, index) => {
+          return (
+            <Card
+              name={card.name}
+              id={card.id}
+              isFlipped={card.isFlipped}
+              flipCard={() => {
+                flipCard(card.id, card.name);
+                setFlips((prev) => prev + 1);
+              }}
+              key={index}
+            />
+          );
+        })}
+      </div>
+
+      {won && <Confetti />}
+      {/* {won && <img src="https://media1.giphy.com/media/YrUD55uLZtdab4CriB/source.gif" width="200px" alt="" /> } */}
+
+      <div className="flex justify-between mt-4">
+        <button className="btn bg-cyan-500" onClick={newGame}>
+          New Game
+        </button>
+        <button
+          className="btn bg-purple-500"
+          onClick={() => {
+            setGame(false);
+          }}
+        >
+          Return Home
+        </button>
+      </div>
+    </>
+  );
 }
