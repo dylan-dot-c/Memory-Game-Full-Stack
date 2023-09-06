@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-// import "./App.css";
-// import { HashRouter, Routes, Route } from "react-router-dom";
-
 import Deck from "../components/Deck";
 import api from "../api";
 
@@ -70,7 +67,7 @@ export default function Home() {
         console.log(data.data);
         setUser({ username: name, id: data.data.id });
       } catch (err) {
-        alert("SOme Error!!");
+        alert("An error Occured");
         console.log(err);
         localStorage.removeItem("userInfo");
       }
@@ -84,8 +81,8 @@ export default function Home() {
       if (name) {
         addNewUser(name);
       } else {
-        alert(
-          "Without ur name you wont be able to play. Just reload to enter your name"
+        toast.warn(
+          "Without your name you wont be able to see yourself on the leaderboard. Just reload to enter your name."
         );
       }
     }

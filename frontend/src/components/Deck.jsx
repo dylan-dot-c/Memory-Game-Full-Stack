@@ -6,6 +6,7 @@ import api from "../api";
 
 import Confetti from "react-confetti";
 import { nanoid } from "nanoid";
+import { toast } from "react-toastify";
 
 export default function Deck({
   difficulty,
@@ -38,7 +39,7 @@ export default function Deck({
       console.log("HighScore Added to DB");
       console.log(data);
     } catch (err) {
-      alert("Failed to add HS");
+      toast.error("Failed to add HS");
     }
   }
 
@@ -131,7 +132,12 @@ export default function Deck({
     const shouldWeUpdate = compare(currentScore, oldHS);
 
     if (shouldWeUpdate) {
-      alert("NEW HIGHSCORE");
+      // toast("")
+      toast("Congrats!! New HighScore!!", {
+        icon: "🏆",
+        position: "bottom-right",
+        theme: "dark",
+      });
       addToLeaderBoard();
       updateHighScore((prevHS) => {
         const newHS = prevHS.map((highScore) => {
