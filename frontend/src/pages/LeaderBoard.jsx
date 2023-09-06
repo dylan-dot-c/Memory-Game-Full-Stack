@@ -1,5 +1,6 @@
+// fixed error when a user dont have a name they cant view leaderboard
+
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
 import { Link } from "react-router-dom";
 import api from "../api";
 
@@ -118,7 +119,8 @@ const LeaderBoard = () => {
             return (
               <tr
                 className={`border border-black my-2 text-center ${
-                  score.userId == userInfo.id && "bg-black text-white"
+                  // if userInfo dont exist it wont run
+                  score.userId == userInfo?.id && "bg-black text-white"
                 }`}
                 key={index}
               >
