@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useStopwatch } from "react-timer-hook";
 import Card from "./Card";
-import axios from "axios";
+// import axios from "axios";
+import api from "../api";
 
 import Confetti from "react-confetti";
 import { nanoid } from "nanoid";
@@ -24,11 +25,10 @@ export default function Deck({
   const { seconds, minutes, pause, reset } = useStopwatch({ autoStart: true });
 
   async function addToLeaderBoard() {
-    const endpoint =
-      "https://memory-game-full-stack-production.up.railway.app/scores/newScore";
+    const endpoint = "/scores/newScore";
 
     try {
-      const data = await axios.post(endpoint, {
+      const data = await api.post(endpoint, {
         id: userInfo.id,
         flips: flips,
         seconds: seconds + minutes * 60,

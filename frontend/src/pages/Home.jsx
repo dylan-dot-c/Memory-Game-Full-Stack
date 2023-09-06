@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 // import { HashRouter, Routes, Route } from "react-router-dom";
 
 import Deck from "../components/Deck";
+import api from "../api";
 
 const difficultyData = [
   {
@@ -60,12 +61,11 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const endpoint =
-      "https://memory-game-full-stack-production.up.railway.app/users/add";
+    const endpoint = "/users/add";
     const addNewUser = async (name) => {
       try {
         // const dataaxios.post(endpoint, {username: name})
-        const data = await axios.post(endpoint, { username: name });
+        const data = await api.post(endpoint, { username: name });
 
         console.log(data.data);
         setUser({ username: name, id: data.data.id });

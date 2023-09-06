@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { Link } from "react-router-dom";
+import api from "../api";
 
 const difficultyData = [
   {
@@ -24,9 +25,9 @@ const LeaderBoard = () => {
   const [userInfo, setUserInfo] = useState(null);
 
   async function getScores() {
-    const endpoint = `https://memory-game-full-stack-production.up.railway.app/scores/all?difficulty=${difficulty}`;
+    const endpoint = `/scores/all?difficulty=${difficulty}`;
     try {
-      const data = await axios.get(endpoint);
+      const data = await api.get(endpoint);
       console.log(data.data.data);
       setScores(data.data.data);
     } catch {
