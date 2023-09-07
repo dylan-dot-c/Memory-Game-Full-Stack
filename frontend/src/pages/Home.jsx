@@ -128,7 +128,7 @@ export default function Home() {
       ) : (
         <div>
           <header className="text-center">
-            <h1 className="text-3xl font-bold underline">Memory Game</h1>
+            <h1 className="text-3xl font-bold underline">Clever Amnesia</h1>
             <p className="text-black/40">@fullStackDev</p>
             <Link to="/leaderboard">
               <h2 className="btn w-fit text-center mx-auto">
