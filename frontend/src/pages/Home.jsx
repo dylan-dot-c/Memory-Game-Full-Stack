@@ -116,7 +116,7 @@ export default function Home() {
   });
 
   return (
-    <main className="max-w-full md:max-w-[700px] lg:max-w-[1000px] mx-auto max-h-screen py-2 px-3">
+    <main className="max-w-full md:max-w-[700px] lg:max-w-[1000px] mx-auto py-2 px-3">
       {game ? (
         <Deck
           difficulty={difficulty}
