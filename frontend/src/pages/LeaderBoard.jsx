@@ -61,7 +61,7 @@ const LeaderBoard = () => {
     return <h1>Sorry, failed to fetch Data</h1>;
   }
   return (
-    <div className="max-w-full md:max-w-[600px] lg:max-w-[600px] mx-auto max-h-screen py-2 px-3">
+    <div className="max-w-full md:max-w-[600px] lg:max-w-[600px] mx-auto py-2 px-3">
       <Link to="/">
         <h2 className="btn w-fit mx-auto text-center bg-green-600 text-white flex gap-2 mb-5">
           <svg
