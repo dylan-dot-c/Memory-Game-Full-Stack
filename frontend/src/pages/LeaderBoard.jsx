@@ -38,6 +38,7 @@ const LeaderBoard = () => {
   }
 
   useEffect(() => {
+    document.title = "Leaderboard - Clever Amnesia";
     const value = JSON.parse(localStorage.getItem("userInfo"));
 
     console.log(value);

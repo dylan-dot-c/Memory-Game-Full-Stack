@@ -1,28 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
-
-
-
   body {
     @apply bg-yellow-400;
-    font-family: 'Righteous', sans-serif, serif;
+    font-family: "Righteous", sans-serif, serif;
     /* fon */
   }
 
+  a {
+    text-decoration: underline;
+  }
   .card-img {
     width: 222px;
     height: 322px;
   }
 
   .rotate-card {
-    transform: rotateY(180deg)
+    transform: rotateY(180deg);
   }
 
   .preserve {

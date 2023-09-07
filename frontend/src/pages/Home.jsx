@@ -86,6 +86,8 @@ export default function Home() {
         );
       }
     }
+
+    document.title = "Home - Clever Amnesia";
     // console.log(userInfo.username);
   }, []);
 
