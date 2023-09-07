@@ -25,6 +25,7 @@ const addNewScore = async (req, res) => {
 
 const getAllScores = async (req, res) => {
   var { difficulty } = req.query;
+  const maxCount = 20;
 
   difficulty = difficulty || "";
   const whereClause = difficulty
@@ -48,7 +49,7 @@ const getAllScores = async (req, res) => {
           attributes: ["username"],
         },
       ],
-      limit: 10,
+      limit: maxCount,
     });
 
     res.status(200).json({ data });
