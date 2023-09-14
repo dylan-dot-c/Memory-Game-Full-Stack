@@ -3,21 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
-
-const difficultyData = [
-  {
-    name: "easy",
-    cards: 4,
-  },
-  {
-    name: "medium",
-    cards: 8,
-  },
-  {
-    name: "hard",
-    cards: 12,
-  },
-];
+import {difficultyData} from '../data.js'
 
 const LeaderBoard = () => {
   const [difficulty, setDifficulty] = useState("EASY");
@@ -58,7 +44,17 @@ const LeaderBoard = () => {
   }, [difficulty]);
 
   if (error) {
-    return <h1>Sorry, failed to fetch Data</h1>;
+    return (
+        <div className="min-h-screen flex items-center justify-center text-center">
+          <div>
+            <img src="https://global-uploads.webflow.com/63a9fb94e473f36dbe99c1b1/64a2fa0b3f2c905474407ea8_a0HrWxO7QBKUYqZA2caN.svg" alt="Error getting results lol" />
+            <p className="  mb-4">Sorry, error getting data. Try again later.</p>
+            <Link to='/'>
+              Return Home
+            </Link>
+          </div>
+        </div>      
+      );
   }
   return (
     <div className="max-w-full md:max-w-[600px] lg:max-w-[600px] mx-auto py-2 px-3">

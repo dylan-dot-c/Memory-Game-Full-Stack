@@ -14,6 +14,10 @@
   a {
     text-decoration: underline;
   }
+
+  a .btn  {
+    text-decoration: none;
+  }
   .card-img {
     width: 222px;
     height: 322px;
@@ -41,7 +45,7 @@
     box-shadow: 7px 7px 1px 1px black;
   }
 
-  .btn:hover {
+  .btn:active {
     transform: translate(7px, 7px);
     box-shadow: 0 0;
   }

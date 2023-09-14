@@ -1,69 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import Deck from "../components/Deck";
 import api from "../api";
+import { noHighScore, difficultyData } from "../data";
+import HighScoreLayout from "../components/HighScoreLayout";
 
-const difficultyData = [
-  {
-    name: "easy",
-    cards: 4,
-  },
-  {
-    name: "medium",
-    cards: 8,
-  },
-  {
-    name: "hard",
-    cards: 12,
-  },
-];
+import FooterContext from "../contexts/FooterContext";
 
-const noHighScore = [
-  {
-    name: "easy",
-    flips: 0,
-    time: {
-      minutes: 0,
-      seconds: 0,
-    },
-  },
-  {
-    name: "medium",
-    flips: 0,
-    time: {
-      minutes: 0,
-      seconds: 0,
-    },
-  },
-  {
-    name: "hard",
-    flips: 0,
-    time: {
-      minutes: 0,
-      seconds: 0,
-    },
-  },
-];
-
-// import { useState } from 'react'
 export default function Home() {
   const [game, setGame] = useState(false);
   const [user, setUser] = useState(null);
   const [difficulty, setDifficulty] = useState(difficultyData[0]);
+
+  const footerContext = useContext(FooterContext) 
   const [highScoreData, setHighScoreData] = useState(() => {
+  
     const data = JSON.parse(localStorage.getItem("highScores"));
 
     return data ?? noHighScore;
   });
 
+  useEffect( () => {
+    footerContext.setShowFooter(!game)
+  }, [game])
+
   useEffect(() => {
     const endpoint = "/users/add";
     const addNewUser = async (name) => {
       try {
-        // const dataaxios.post(endpoint, {username: name})
         const data = await api.post(endpoint, { username: name });
-
         console.log(data.data);
         setUser({ username: name, id: data.data.id });
       } catch (err) {
@@ -88,7 +54,6 @@ export default function Home() {
     }
 
     document.title = "Home - Clever Amnesia";
-    // console.log(userInfo.username);
   }, []);
 
   useEffect(() => {
@@ -101,19 +66,7 @@ export default function Home() {
     localStorage.setItem("highScores", JSON.stringify(highScoreData));
   }, [highScoreData]);
 
-  const hsLayout = highScoreData.map((highScore, index) => {
-    const minutes = ("00" + highScore.time.minutes).slice(-2);
-    const seconds = ("00" + highScore.time.seconds).slice(-2);
-
-    return (
-      <div className="flex justify-between items-center" key={index}>
-        <p className="capitalize">{highScore.name}</p>
-        <p>
-          Flips: {highScore.flips} <br /> Time: {minutes}:{seconds}
-        </p>
-      </div>
-    );
-  });
+  
 
   return (
     <main className="max-w-full md:max-w-[700px] lg:max-w-[1000px] mx-auto py-2 px-3">
@@ -153,7 +106,7 @@ export default function Home() {
                   <button
                     key={index}
                     className={`${
-                      difficulty.name == data.name && "bg-red-500"
+                      difficulty.name == data.name && "bg-red-600 text-white"
                     } btn`}
                     onClick={() => {
                       setDifficulty(data);
@@ -166,7 +119,7 @@ export default function Home() {
             </div>
           </div>
           <button
-            className="bg-red-600 btn text-lg text-white mx-auto block"
+            className="bg-green-600 btn text-lg text-white mx-auto block"
             onClick={() => setGame(true)}
           >
             Start Game
@@ -176,7 +129,8 @@ export default function Home() {
             My HighScores
           </h2>
 
-          <div className="divide-y divide-black">{hsLayout}</div>
+            <HighScoreLayout highScoreData={highScoreData} />
+          
         </div>
       )}
     </main>
