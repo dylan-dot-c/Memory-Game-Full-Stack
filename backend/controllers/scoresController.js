@@ -25,7 +25,7 @@ const addNewScore = async (req, res) => {
 
 const getAllScores = async (req, res) => {
   var { difficulty } = req.query;
-  const maxCount = 20;
+  const maxCount = 10;
 
   difficulty = difficulty || "";
   const whereClause = difficulty
