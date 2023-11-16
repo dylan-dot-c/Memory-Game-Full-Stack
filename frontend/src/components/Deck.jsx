@@ -91,8 +91,8 @@ export default function Deck({
   }
 
   function flipCard(id, name) {
-    console.log(name, id);
-    console.log("Founded", foundCards);
+    // console.log(name, id);
+    // console.log("Founded", foundCards);
 
     setCards((oldCards) => {
       const newCards = oldCards.map((card) => {
@@ -110,7 +110,7 @@ export default function Deck({
 
   function compareHighScore() {
     // function that compares the current highscore and the stored one
-    // and updates the highscore for the corres difficulty if it is greater
+    // and updates the highscore for the scores difficulty if it is greater
 
     const currentScore = {
       name: difficulty.name,
@@ -135,7 +135,7 @@ export default function Deck({
       // toast("")
       toast("Congrats!! New HighScore!!", {
         icon: "🏆",
-        position: "bottom-right",
+        position: "top-right",
         theme: "dark",
       });
       addToLeaderBoard();
