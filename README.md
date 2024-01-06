@@ -1,4 +1,4 @@
-#Clever Amnesia
+# Clever Amnesia
 
 This is one of my first fullStack projects that I actually deployed!
 Clever Amnesia is just a simple memory game where playes flip cards and try and match them up.
