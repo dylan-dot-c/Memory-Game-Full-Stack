@@ -9,10 +9,10 @@ import axios from "axios";
 const baseURL = window.location.origin;
 
 const api = axios.create({
-  baseURL:
-    baseURL === "http://localhost:5173"
-      ? import.meta.env.VITE_API_ENDPOINT_DEV
-      : import.meta.env.VITE_API_ENDPOINT_PROD,
+    baseURL:
+        baseURL === "http://localhost:5173"
+            ? import.meta.env.VITE_API_ENDPOINT_DEV
+            : import.meta.env.VITE_API_ENDPOINT_PROD,
 });
 
 export default api;
