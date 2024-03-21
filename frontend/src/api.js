@@ -1,3 +1,4 @@
+// obselete file
 import axios from "axios";
 // Check the location of the hoster server
 // if it is localhost user the development endpoint
@@ -8,6 +9,8 @@ import axios from "axios";
 
 const baseURL = window.location.origin;
 
+// notice that im still hardcoding the localhost
+// not suitable when that change or the current port is used
 const api = axios.create({
     baseURL:
         baseURL === "http://localhost:5173"
