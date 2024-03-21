@@ -1,3 +1,4 @@
+
 # Clever Amnesia Project
 
 Version 2.0.0
@@ -11,3 +12,4 @@ Simple full stack project that was first built with React, JavaScript and Tailwi
 Now i have removed the backend folder and all that and have used supabase as a way to work with my backend
 
 ##
+
