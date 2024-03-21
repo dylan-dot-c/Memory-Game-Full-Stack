@@ -1,36 +1,41 @@
 {
-  "name": "memory-game",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "axios": "^1.5.0",
-    "dotenv": "^16.3.1",
-    "nanoid": "^4.0.2",
-    "react": "^18.2.0",
-    "react-confetti": "^6.1.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.15.0",
-    "react-timer-hook": "^3.0.6",
-    "react-toastify": "^9.1.3"
-  },
-  "devDependencies": {
-    "@types/react": "^18.0.37",
-    "@types/react-dom": "^18.0.11",
-    "@vitejs/plugin-react": "^4.0.0",
-    "autoprefixer": "^10.4.14",
-    "eslint": "^8.38.0",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.3.4",
-    "postcss": "^8.4.24",
-    "tailwindcss": "^3.3.2",
-    "vite": "^4.3.9"
-  }
+    "name": "memory-game",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@supabase/supabase-js": "^2.39.8",
+        "axios": "^1.5.0",
+        "dotenv": "^16.3.1",
+        "drizzle-orm": "^0.30.4",
+        "nanoid": "^4.0.2",
+        "postgres": "^3.4.3",
+        "react": "^18.2.0",
+        "react-confetti": "^6.1.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.15.0",
+        "react-timer-hook": "^3.0.6",
+        "react-toastify": "^9.1.3"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.67",
+        "@types/react-dom": "^18.2.22",
+        "@vitejs/plugin-react": "^4.0.0",
+        "autoprefixer": "^10.4.14",
+        "drizzle-kit": "^0.20.14",
+        "eslint": "^8.38.0",
+        "eslint-plugin-react": "^7.32.2",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.3.4",
+        "postcss": "^8.4.24",
+        "tailwindcss": "^3.3.2",
+        "typescript": "^5.4.2",
+        "vite": "^4.3.9"
+    }
 }
