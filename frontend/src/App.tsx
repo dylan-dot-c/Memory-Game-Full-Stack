@@ -3,20 +3,9 @@ import Home from "./pages/Home";
 import LeaderBoard from "./pages/LeaderBoard";
 import { ToastContainer } from "react-toastify";
 import Footer from "./components/Footer";
-import { useEffect, useState } from "react";
-import supabase from "./lib/supabase";
-
+import { usefooterState } from "./stores/FooterStore";
 export default function App() {
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         let { data: Countries, error } = await supabase
-    //             .from("Countries")
-    //             .select("*");
-    //         console.log(Countries);
-    //         return Countries;
-    //     };
-    //     getData();
-    // }, []);
+    const showFooter = usefooterState((state) => state.showFooter);
 
     return (
         <HashRouter>
@@ -25,7 +14,7 @@ export default function App() {
                 <Route path='/leaderboard' element={<LeaderBoard />} />
                 <Route path='/' element={<Home />} />
             </Routes>
-            <Footer />
+            {showFooter && <Footer />}
         </HashRouter>
     );
 }

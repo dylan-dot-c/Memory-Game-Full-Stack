@@ -5,48 +5,48 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-yellow-400;
-    font-family: "Righteous", sans-serif, serif;
-    /* fon */
-  }
+    body {
+        @apply bg-yellow-400;
+        font-family: "Righteous", sans-serif, serif;
+        /* fon */
+    }
 
-  a {
-    text-decoration: underline;
-  }
+    footer a {
+        text-decoration: underline;
+    }
 
-  a .btn  {
-    text-decoration: none;
-  }
-  .card-img {
-    width: 222px;
-    height: 322px;
-  }
+    a .btn {
+        text-decoration: none;
+    }
+    .card-img {
+        width: 222px;
+        height: 322px;
+    }
 
-  .rotate-card {
-    transform: rotateY(180deg);
-  }
+    .rotate-card {
+        transform: rotateY(180deg);
+    }
 
-  .preserve {
-    transform-style: preserve-3d;
-  }
+    .preserve {
+        transform-style: preserve-3d;
+    }
 
-  .visibility {
-    backface-visibility: hidden;
-  }
+    .visibility {
+        backface-visibility: hidden;
+    }
 
-  .card {
-    box-shadow: 7px 7px 1px 1px black;
-    border: 1px solid black;
-  }
+    .card {
+        box-shadow: 7px 7px 1px 1px black;
+        border: 1px solid black;
+    }
 
-  .btn {
-    @apply px-4 py-2 my-2 border border-black transition;
-    box-shadow: 7px 7px 1px 1px black;
-  }
+    .btn {
+        @apply px-4 py-2 my-2 border border-black transition;
+        box-shadow: 7px 7px 1px 1px black;
+    }
 
-  .btn:active {
-    transform: translate(7px, 7px);
-    box-shadow: 0 0;
-  }
+    .btn:active {
+        transform: translate(7px, 7px);
+        box-shadow: 0 0;
+    }
 }

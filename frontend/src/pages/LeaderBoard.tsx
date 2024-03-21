@@ -4,14 +4,19 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { difficultyData } from "../data.js";
 import { getHighScores } from "../lib/queries/scores.js";
-import { Tables } from "../../types/supabase.js";
+import { Tables } from "../types/supabase.js";
 import useLocalStorage from "../hooks/useLocalStorage.js";
 import { HighScoreType } from "../lib/queries/scores.js";
+import { usefooterState } from "../stores/FooterStore.js";
 
 const LeaderBoard = () => {
+    const updateFooter = usefooterState((state) => state.toggleFooter);
+
     const [difficulty, setDifficulty] = useState(1);
     const [scores, setScores] = useState<HighScoreType>([]);
     const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(true);
+
     const [userInfo, setUserInfo] = useState<Tables<"users"> | null>(null);
     const userData = useLocalStorage<Tables<"users">>("player_details");
 
@@ -19,10 +24,15 @@ const LeaderBoard = () => {
         const value = await getHighScores(difficulty);
         if (value.data) {
             setScores(value.data);
+            setLoading(false);
+        }
+        if (error) {
+            setError(true);
         }
     };
 
     useEffect(() => {
+        updateFooter(false);
         document.title = "Leaderboard - Clever Amnesia";
         const value = userData.getStoredData();
 
@@ -32,6 +42,14 @@ const LeaderBoard = () => {
         getScores();
     }, [difficulty]);
 
+    if (loading) {
+        return (
+            <div className='w-screen h-screen flex items-center justify-center text-center flex-col'>
+                <div className='border-4 border-black border-t-transparent animate-spin w-10 h-10 rounded-full mb-2'></div>
+                <p>Loading...</p>
+            </div>
+        );
+    }
     if (error) {
         return (
             <div className='min-h-screen flex items-center justify-center text-center'>
@@ -43,7 +61,9 @@ const LeaderBoard = () => {
                     <p className='  mb-4'>
                         Sorry, error getting data. Try again later.
                     </p>
-                    <Link to='/'>Return Home</Link>
+                    <Link to='/' className='no-underline'>
+                        Return Home
+                    </Link>
                 </div>
             </div>
         );
@@ -51,7 +71,7 @@ const LeaderBoard = () => {
     return (
         <div className='max-w-full md:max-w-[600px] lg:max-w-[600px] mx-auto py-2 px-3'>
             <Link to='/'>
-                <h2 className='btn w-fit mx-auto text-center bg-green-600 text-white flex gap-2 mb-5'>
+                <span className='btn w-fit mx-auto text-center bg-green-600 text-white flex gap-2 mb-5'>
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -66,7 +86,7 @@ const LeaderBoard = () => {
                         />
                     </svg>
                     Return Home
-                </h2>
+                </span>
             </Link>
             <h1 className='btn text-center mx-auto w-fit mb-5'>LeaderBoard</h1>
             <div className='flex justify-between mb-5'>

@@ -1,5 +1,3 @@
-// import { useState } from "react"
-
 type CardProps = {
     name: string;
     id: string;
@@ -8,13 +6,6 @@ type CardProps = {
 };
 
 function Card({ name, id, isFlipped, flipCard }: CardProps) {
-    // const [flipped, setFlipped] = useState(false)
-
-    // function handleClick() {
-    //     console.log('clicked')
-    //     flipCard(id)
-    // }
-
     function handleClick() {
         if (isFlipped) return;
 

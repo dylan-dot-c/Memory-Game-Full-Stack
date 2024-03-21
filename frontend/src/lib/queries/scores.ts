@@ -1,5 +1,7 @@
 import supabase from "../supabase";
-import { QueryResult, QueryData, QueryError } from "@supabase/supabase-js";
+import { QueryData } from "@supabase/supabase-js";
+
+// supabase supports type generation for tables and queries
 export const addHighScore = async (
     difficulty: number,
     seconds: number,
@@ -24,6 +26,8 @@ export const addHighScore = async (
     return { data, error };
 };
 
+// having an issue when passing a dynamic value to .eq("difficulty", 1)
+// so I used a constant as the base just to generate the type
 const baseHighScoreQuery = supabase
     .from("scores")
     .select(`*, users (id, username)`)

@@ -6,7 +6,8 @@ import HighScoreLayout from "../components/HighScoreLayout";
 import Deck from "../components/Deck";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { addUser } from "../lib/queries/user";
-import { Tables } from "../../types/supabase";
+import { Tables } from "../types/supabase";
+import { usefooterState } from "../stores/FooterStore";
 
 export default function Home() {
     const highScores = useLocalStorage<HighScore[]>("player_highScores");
@@ -14,6 +15,7 @@ export default function Home() {
     const [game, setGame] = useState(false);
     const [user, setUser] = useState<Tables<"users"> | null>(null);
     const [difficulty, setDifficulty] = useState(difficultyData[0]);
+    const updateFooter = usefooterState((state) => state.toggleFooter);
     // initially set to no highscore and then if highscore update it
     const [highScoreData, setHighScoreData] = useState(getHighScore());
     // const [highScoreData, setHighScoreData] = useState(() => {
@@ -35,7 +37,8 @@ export default function Home() {
 
     useEffect(() => {
         // const result = addUser(name as string)
-
+        document.title = "Home | Clever Amnesia";
+        updateFooter(true);
         const regUser = async () => {
             const userInfo = userData.getStoredData();
             if (userInfo != null) {
@@ -79,7 +82,7 @@ export default function Home() {
                 difficulty={difficulty}
                 setGame={setGame}
                 highScore={highScoreData}
-                updateHighScore={setHighScoreData}
+                updateHighScoreData={setHighScoreData}
                 userInfo={user!}
             />
         );
@@ -130,7 +133,10 @@ export default function Home() {
                 </div>
                 <button
                     className='bg-green-600 btn text-lg text-white mx-auto block'
-                    onClick={() => setGame(true)}>
+                    onClick={() => {
+                        setGame(true);
+                        updateFooter(false);
+                    }}>
                     Start Game
                 </button>
 

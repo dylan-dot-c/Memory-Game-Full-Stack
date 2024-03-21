@@ -1,12 +1,14 @@
+// localStorage hook to interact with localStorage declaratively
+
 interface LocalStorage<T> {
     getStoredData: () => T | null;
     setData: (data: T) => void;
     removeItem: () => void;
 }
 
-const useLocalStorage = <T,>(item: string): LocalStorage<T> => {
+const useLocalStorage = <T,>(key: string): LocalStorage<T> => {
     function getStoredData() {
-        const data = localStorage.getItem(item);
+        const data = localStorage.getItem(key);
 
         if (data == null) return null;
 
@@ -16,11 +18,11 @@ const useLocalStorage = <T,>(item: string): LocalStorage<T> => {
     function setData(data: T) {
         const stringedItem = JSON.stringify(data);
 
-        localStorage.setItem(item, stringedItem);
+        localStorage.setItem(key, stringedItem);
     }
 
     function removeItem() {
-        localStorage.removeItem(item);
+        localStorage.removeItem(key);
     }
 
     return { getStoredData, setData, removeItem };
