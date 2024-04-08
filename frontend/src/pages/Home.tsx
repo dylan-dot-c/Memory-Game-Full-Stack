@@ -18,14 +18,7 @@ export default function Home() {
     const updateFooter = usefooterState((state) => state.toggleFooter);
     // initially set to no highscore and then if highscore update it
     const [highScoreData, setHighScoreData] = useState(getHighScore());
-    // const [highScoreData, setHighScoreData] = useState(() => {
-    //   const data = JSON.parse(localStorage.getItem("highScores"));
-    //   return data ?? noHighScore;
-    // });
 
-    // gonna create a custom jhook for the localstorage api
-
-    //
     function getHighScore() {
         const score = highScores.getStoredData();
         if (score) {
@@ -36,7 +29,6 @@ export default function Home() {
     }
 
     useEffect(() => {
-        // const result = addUser(name as string)
         document.title = "Home | Clever Amnesia";
         updateFooter(true);
         const regUser = async () => {
@@ -78,13 +70,15 @@ export default function Home() {
 
     if (game) {
         return (
-            <Deck
-                difficulty={difficulty}
-                setGame={setGame}
-                highScore={highScoreData}
-                updateHighScoreData={setHighScoreData}
-                userInfo={user!}
-            />
+            <main className='max-w-full md:max-w-[700px] lg:max-w-[1000px] mx-auto py-2 px-3'>
+                <Deck
+                    difficulty={difficulty}
+                    setGame={setGame}
+                    highScore={highScoreData}
+                    updateHighScoreData={setHighScoreData}
+                    userInfo={user!}
+                />
+            </main>
         );
     }
 
