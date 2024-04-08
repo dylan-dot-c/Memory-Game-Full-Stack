@@ -8,6 +8,7 @@ import { Tables } from "../types/supabase.js";
 import useLocalStorage from "../hooks/useLocalStorage.js";
 import { HighScoreType } from "../lib/queries/scores.js";
 import { usefooterState } from "../stores/FooterStore.js";
+import supabase from "../lib/supabase.js";
 
 const LeaderBoard = () => {
     const updateFooter = usefooterState((state) => state.toggleFooter);
@@ -19,6 +20,19 @@ const LeaderBoard = () => {
 
     const [userInfo, setUserInfo] = useState<Tables<"users"> | null>(null);
     const userData = useLocalStorage<Tables<"users">>("player_details");
+
+    // realtime updates for leaderboard
+    supabase
+        .channel("custom")
+        .on(
+            "postgres_changes",
+            { event: "INSERT", schema: "public", table: "scores" },
+            (payload) => {
+                console.log("New Data");
+                getScores();
+            }
+        )
+        .subscribe();
 
     const getScores = async () => {
         const value = await getHighScores(difficulty);
